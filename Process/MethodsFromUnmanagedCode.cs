@@ -7,31 +7,14 @@ namespace Process
     internal class MethodsFromUnmanagedCode
     {
         private const string dllName = @"Kernel32.dll";
-        private int invalidValue = -1;
-        private ICollection<IntPtr> processDescriptors = new List<IntPtr>();
 
         [DllImport(dllName)]
-
         public static extern IntPtr CreateToolhelp32Snapshot(int TH32CS_SNAPPROCESS, int idProcess);
 
+        [DllImport(dllName, EntryPoint = "Process32First")]
+        public static extern bool FirstProcess(IntPtr handle, ref ProcessEntry @struct);
 
-
-        public void GetProcessHandle()
-        {
-            int invalidValue = -1;
-            IntPtr handle = CreateToolhelp32Snapshot(0x00000002, 0);
-            if (handle != (IntPtr)invalidValue)
-            {
-                
-
-
-            }
-
-
-
-        }
-
-
-
+        [DllImport(dllName, EntryPoint = "Process32Next")]
+        public static extern bool NextProcess(IntPtr handle, ref ProcessEntry @struct);
     }
 }

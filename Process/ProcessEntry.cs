@@ -10,7 +10,7 @@ namespace Process
     {
         public int DwSize { get; set; }
         public int CntUsage { get; set; }//0
-        public int ProcessID { get; set; }//Идентификатор процесса.
+        public int ProcessID { get; set; }//Идентификатор процесса. 
         public int DefaultHeapID { get; set; }//0
         public int Th32ModuleID { get; set; }//0
         public int Thread { get; set; }//поток
