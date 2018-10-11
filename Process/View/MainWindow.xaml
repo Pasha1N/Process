@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TreeView Name="processes" BorderThickness="0"></TreeView>
-        
+        <TreeView Name="processes" BorderThickness="0" Background="#FFCFCFCF"></TreeView>
+       
     </Grid>
 </Window>
