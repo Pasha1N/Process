@@ -4,10 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Process.View"
+        xmlns:viewModels="clr-namespace:Processes.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <HierarchicalDataTemplate DataType ="{x:Type viewModels:ProcessViewModel}" ItemsSource = "{Binding Path = Processes}" >
+            <TextBlock Foreground="Green" Text="{Binding Path= ProcessName}"/>
+        </HierarchicalDataTemplate>
+    </Window.Resources>
+
     <Grid>
-        <TreeView Name="processes" BorderThickness="0" Background="#FFCFCFCF"></TreeView>
-       
+        <TreeView ItemsSource = "{Binding Path = Processes}"/>
     </Grid>
 </Window>

@@ -1,22 +1,25 @@
-﻿using System;
+﻿using Process;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Process.ViewModels
+namespace Processes.ViewModels
 {
-    public class ViewModelProcesses
+    public class MainViewModel
     {
         private const string dllName = @"Kernel32.dll";
         private int invalidValue = -1;
-        private ICollection<IntPtr> processDescriptors = new List<IntPtr>();
+        private ICollection<ProcessViewModel> processDescriptors = new List<ProcessViewModel>();
 
+        public MainViewModel()
+        {
+            GetProcessHandle();
+        }
 
-
-        //IntPtr intPtr = MethodsFromUnmanagedCode.CreateToolhelp32Snapshot(0x00000002, 0);
-
+        public IEnumerable<ProcessViewModel> Processes => processDescriptors; 
 
         public void GetProcessHandle()
         {
@@ -29,19 +32,15 @@ namespace Process.ViewModels
             {
                 if (MethodsFromUnmanagedCode.FirstProcess(handle, ref processEntry))
                 {
-
-
                     do
                     {
-                        processDescriptors.Add(handle);
+                        Models.Process proces = new Models.Process(processEntry.ExeFile,processEntry.ProcessID);
+                        ProcessViewModel processViewModel = new ProcessViewModel(proces);
+                        processDescriptors.Add(processViewModel);
                     }
                     while (MethodsFromUnmanagedCode.NextProcess(handle, ref processEntry));
-                    
                 }
             }
-
-
-
         }
     }
 }

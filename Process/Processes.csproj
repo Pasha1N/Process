@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E702FA0C-E5C6-47E4-B6E5-1AAFBA1FFED9}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Process</RootNamespace>
-    <AssemblyName>Process</AssemblyName>
+    <RootNamespace>Processes</RootNamespace>
+    <AssemblyName>Processes</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -58,9 +58,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\Process.cs" />
     <Compile Include="ProcessEntry.cs" />
     <Compile Include="MethodsFromUnmanagedCode.cs" />
-    <Compile Include="ViewModels\ViewModelProcesses.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ProcessViewModel.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

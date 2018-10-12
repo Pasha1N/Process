@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace Process
+namespace Processes
 {
     internal class MethodsFromUnmanagedCode
     {

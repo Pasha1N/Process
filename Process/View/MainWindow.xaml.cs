@@ -1,15 +1,15 @@
-﻿using Process.ViewModels;
+﻿using Processes.ViewModels;
 using System.Windows;
 
 namespace Process.View
 {
     public partial class MainWindow : Window
     {
-        public MainWindow(ViewModelProcesses viewModelProcesses)
+        public MainWindow(MainViewModel mainViewModel)
         {
             InitializeComponent();
 
-            DataContext = viewModelProcesses;
+            DataContext = mainViewModel;
         }
     }
 }

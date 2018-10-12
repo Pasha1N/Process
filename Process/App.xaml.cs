@@ -1,4 +1,4 @@
-﻿using Process.ViewModels;
+﻿using Processes.ViewModels;
 using System.Windows;
 
 namespace Process
@@ -8,8 +8,8 @@ namespace Process
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            ViewModelProcesses viewModelProcesses = new ViewModelProcesses();
-            Process.View.MainWindow mainWindow = new View.MainWindow(viewModelProcesses);
+            MainViewModel mainViewModel = new MainViewModel();
+            Process.View.MainWindow mainWindow = new View.MainWindow(mainViewModel);
             mainWindow.Show();
         }
     }
