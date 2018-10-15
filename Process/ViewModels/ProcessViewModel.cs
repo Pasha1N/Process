@@ -9,6 +9,7 @@ namespace Processes.ViewModels
     public class ProcessViewModel
     {
         private Models.Process process;
+        private ICollection<ProcessViewModel> processesViewModel = new List<ProcessViewModel>();
 
         public ProcessViewModel(Models.Process process)
         {
@@ -17,6 +18,7 @@ namespace Processes.ViewModels
 
         public int ProcessID => process.ProcessID;
         public string ProcessName => process.ProcessName;
-        public ICollection<ProcessViewModel> ProcessesViewModel { get; }
+        public ICollection<ProcessViewModel> ProcessesViewModel => processesViewModel;
+        public int ParentProcessID => process.ParentProcessID;
     }
 }
