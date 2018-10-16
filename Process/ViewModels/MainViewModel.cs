@@ -16,8 +16,8 @@ namespace Processes.ViewModels
     {
         private const string dllName = @"Kernel32.dll";
         private int invalidValue = -1;
-        private ICollection<ProcessViewModel> processViewModels = new List<ProcessViewModel>();
-        private IList<Models.Process> processes = new List<Models.Process>();
+        private IList<ProcessViewModel> processViewModels = new List<ProcessViewModel>();
+        private IList<Models.Process> processes = new List<Models.Process>();//IColaction
         private ICommand commandForStopProcess;
         private ICommand commandForCreateProcess;
         private ICommand commandForRefresh;
@@ -73,12 +73,13 @@ namespace Processes.ViewModels
                     {
                         ProcessViewModel processModel = new ProcessViewModel(processes[j]);
                         processes.Remove(processes[j]);
-                        processModel.ProcessesViewModel.Add(processViewModel);
+                        processViewModel.ProcessesViewModel.Add(processModel);
+
                     }
                     else
                     {
                         ProcessViewModel processModel = new ProcessViewModel(processes[j]);
-                        Models.Process parentProcess = ProcessSearch(processes[j].ParentProcessID);
+                        Models.Process parentProcess = ProcessSearch(processModel.ParentProcessID);
 
                         if (parentProcess != null)
                         {
@@ -94,9 +95,42 @@ namespace Processes.ViewModels
                             processViewModels.Add(processModel1);
                         }
                     }
+
+                }
+                else
+                {
+                    ProcessViewModel processModel1 = new ProcessViewModel(processes[j]);
+                    processViewModels.Add(processModel1);
                 }
             }
         }
+
+
+        //public void Sorting()
+        //{
+        //    bool wereChanges = true;
+
+        //    while (wereChanges)
+        //    {
+        //        wereChanges = false;
+
+        //        for (int i = 0; i < processes.Count; i++)
+        //        {
+        //            ProcessViewModel parentProcess = processViewModelSearch(processViewModels, processes[i].ParentProcessID);
+
+        //            if (parentProcess != null)
+        //            {
+        //                ProcessViewModel processViewModel = processViewModelSearch(processViewModels, processes[i].ProcessID);
+        //                RemoveProcessViewModel(processViewModels,  processViewModelSearch(processViewModels, processes[i].ProcessID));
+        //                parentProcess.ProcessesViewModel.Add(processViewModel);//error
+        //                wereChanges = true;
+        //            }
+        //        }
+        //    }
+        //}
+
+
+
 
 
         public ProcessViewModel processViewModelSearch(IEnumerable<ProcessViewModel> processModels, int processViewModelId)
@@ -119,6 +153,28 @@ namespace Processes.ViewModels
 
             return processViewModel;
         }
+
+
+        //public bool RemoveProcessViewModel(IEnumerable<ProcessViewModel> processModels, ProcessViewModel processViewModel)
+        //{
+        //    bool removed = false;
+
+        //    foreach (ProcessViewModel process in processModels)
+        //    {
+        //        if (process.ProcessID == processViewModel.ProcessID)
+        //        {
+        //            processViewModels.Remove(process);
+        //            removed = true;
+        //            break;
+        //        }
+
+        //        if (process.ProcessesViewModel.Count > 0)
+        //        {
+        //            RemoveProcessViewModel(process.ProcessesViewModel, processViewModel);
+        //        }
+        //    }
+        //    return removed;
+        //}
 
         public Models.Process ProcessSearch(int processId)
         {
