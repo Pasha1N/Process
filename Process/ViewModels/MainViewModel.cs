@@ -62,14 +62,12 @@ namespace Processes.ViewModels
         {
             bool work = true;
 
-          //  while (work)
-          //  {
-                for (int j = 0; j < processes.Count; j++)
-                {
+            for (int j = 0; j < processes.Count; j++)
+            {
                 if (processes[j].ParentProcessID != 0)
                 {
                     ProcessViewModel processViewModel = null;
-                    processViewModel = processViewModelSearch(processViewModels ,processes[j].ParentProcessID);
+                    processViewModel = processViewModelSearch(processViewModels, processes[j].ParentProcessID);
 
                     if (processViewModel != null)
                     {
@@ -81,15 +79,23 @@ namespace Processes.ViewModels
                     {
                         ProcessViewModel processModel = new ProcessViewModel(processes[j]);
                         Models.Process parentProcess = ProcessSearch(processes[j].ParentProcessID);
-                        ProcessViewModel parentProcessModel = new ProcessViewModel(parentProcess);
-                        parentProcessModel.ProcessesViewModel.Add(processModel);
-                        processes.Remove(processes[j]);
-                        processes.Remove(parentProcess);
-                        processViewModels.Add(parentProcessModel);
+
+                        if (parentProcess != null)
+                        {
+                            ProcessViewModel parentProcessModel = new ProcessViewModel(parentProcess);
+                            parentProcessModel.ProcessesViewModel.Add(processModel);
+                            processes.Remove(processes[j]);
+                            processes.Remove(parentProcess);
+                            processViewModels.Add(parentProcessModel);
+                        }
+                        else
+                        {
+                            ProcessViewModel processModel1 = new ProcessViewModel(processes[j]);
+                            processViewModels.Add(processModel1);
+                        }
                     }
                 }
-                }
-           // }
+            }
         }
 
 
