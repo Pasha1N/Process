@@ -13,7 +13,9 @@
                 <Run  FontWeight="Bold"  Text="{Binding Path= ProcessName, Mode=OneWay}"/>
                 <Run Text="("/>
                 <Run Text="{Binding Path=ProcessID, Mode=OneWay}"/>
-                 <Run Text=")"/>
+                 <Run Text=")                          ("/>
+                <Run Text="{Binding Path=ParentProcessID, Mode=OneWay}"/>
+                <Run Text=")"/>
             </TextBlock>
         </HierarchicalDataTemplate>
     </Window.Resources>
