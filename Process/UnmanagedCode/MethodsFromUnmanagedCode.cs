@@ -19,14 +19,14 @@ namespace Processes
         public static extern bool NextProcess(IntPtr handle, ref ProcessEntry @struct);
 
         [DllImport(dllName)]
-        public static extern bool CreateProcess(ref string lpApplicationName
-            , ref string lpCommandLine
-            , ref SecurityAttributes lpProcessAttributes
-            , ref SecurityAttributes lpThreadAttributes
+        public static extern bool CreateProcess(string lpApplicationName
+            , string lpCommandLine
+            , IntPtr lpProcessAttributes
+            , IntPtr lpThreadAttributes
             , bool bInheritHandles
-            , int? dwCreationFlags
-            , ref int? lpEnvironment
-            , ref string lpCurrentDirectory
+            , int dwCreationFlags
+            , IntPtr lpEnvironment
+            , string lpCurrentDirectory
             , ref Startupinfoa lpStartupInfo
             , ref ProcessInfomation lpProcessInformation);
 

@@ -28,7 +28,6 @@ namespace Processes.ViewModels
             commandForCreateProcess = new DelegateCommand(CreateProcess);
             GetProcessHandle();
             Sorting();
-            CreateProcess();
         }
 
         public ICommand CommandForCreateProcess => commandForCreateProcess;
@@ -52,6 +51,7 @@ namespace Processes.ViewModels
                     {
                         Models.Process process = new Models.Process(processEntry.ExeFile, processEntry.ProcessID, processEntry.ParentProcessID);
                         processes.Add(process);
+                        // processViewModels.Add(new ProcessViewModel( process));
                     }
                     while (MethodsFromUnmanagedCode.NextProcess(handle, ref processEntry));
                 }
@@ -60,47 +60,36 @@ namespace Processes.ViewModels
 
         public void Sorting()
         {
-            bool work = true;
-
             for (int j = 0; j < processes.Count; j++)
             {
-                if (processes[j].ParentProcessID != 0)
+                ProcessViewModel processViewModel = null;
+                processViewModel = processViewModelSearch(processViewModels, processes[j].ParentProcessID);
+
+                if (processViewModel != null)
                 {
-                    ProcessViewModel processViewModel = null;
-                    processViewModel = processViewModelSearch(processViewModels, processes[j].ParentProcessID);
-
-                    if (processViewModel != null)
-                    {
-                        ProcessViewModel processModel = new ProcessViewModel(processes[j]);
-                        processes.Remove(processes[j]);
-                        processViewModel.ProcessesViewModel.Add(processModel);
-
-                    }
-                    else
-                    {
-                        ProcessViewModel processModel = new ProcessViewModel(processes[j]);
-                        Models.Process parentProcess = ProcessSearch(processModel.ParentProcessID);
-
-                        if (parentProcess != null)
-                        {
-                            ProcessViewModel parentProcessModel = new ProcessViewModel(parentProcess);
-                            parentProcessModel.ProcessesViewModel.Add(processModel);
-                            processes.Remove(processes[j]);
-                            processes.Remove(parentProcess);
-                            processViewModels.Add(parentProcessModel);
-                        }
-                        else
-                        {
-                            ProcessViewModel processModel1 = new ProcessViewModel(processes[j]);
-                            processViewModels.Add(processModel1);
-                        }
-                    }
+                    ProcessViewModel processModel = new ProcessViewModel(processes[j]);
+                    processes.Remove(processes[j]);
+                    processViewModel.ProcessesViewModel.Add(processModel);
 
                 }
                 else
                 {
-                    ProcessViewModel processModel1 = new ProcessViewModel(processes[j]);
-                    processViewModels.Add(processModel1);
+                    ProcessViewModel processModel = new ProcessViewModel(processes[j]);
+                    Models.Process parentProcess = ProcessSearch(processModel.ParentProcessID);
+
+                    if (parentProcess != null)
+                    {
+                        ProcessViewModel parentProcessModel = new ProcessViewModel(parentProcess);
+                        parentProcessModel.ProcessesViewModel.Add(processModel);
+                        processes.Remove(processes[j]);
+                        processes.Remove(parentProcess);
+                        processViewModels.Add(parentProcessModel);
+                    }
+                    else
+                    {
+                        ProcessViewModel processModel1 = new ProcessViewModel(processes[j]);
+                        processViewModels.Add(processModel1);
+                    }
                 }
             }
         }
@@ -145,9 +134,9 @@ namespace Processes.ViewModels
                     break;
                 }
 
-                if (process.ProcessesViewModel.Count > 0) 
+                if (process.ProcessesViewModel.Count > 0)
                 {
-                    processViewModelSearch(process.ProcessesViewModel, processViewModelId);
+                    processViewModel = processViewModelSearch(process.ProcessesViewModel, processViewModelId);
                 }
             }
 
@@ -186,7 +175,7 @@ namespace Processes.ViewModels
                 {
                     desiredProcess = process;
                     break;
-                } 
+                }
             }
             return desiredProcess;
         }
@@ -194,27 +183,23 @@ namespace Processes.ViewModels
 
         private void CreateProcess()
         {
-
             Startupinfoa startupinfoa = new Startupinfoa();
             startupinfoa.cb = Marshal.SizeOf<Startupinfoa>();
             ProcessInfomation processInfomation = new ProcessInfomation();
-            string commandLine = "notepad";
+            string commandLine = "calc";
             string apName = null;
             string currentDirectory = null;
-            int? lpEnvironment = null;
 
-            MessageBox.Show("hi my Freind");
-
-            //MethodsFromUnmanagedCode.CreateProcess(ref apName
-            //    , ref commandLine
-            //    , null
-            //    , null
-            //    , false
-            //    , 0
-            //    , ref lpEnvironment
-            //    , ref currentDirectory
-            //    , ref startupinfoa
-            //    , ref processInfomation);
+            MethodsFromUnmanagedCode.CreateProcess(apName
+                , commandLine
+                , IntPtr.Zero
+                , IntPtr.Zero
+                , false
+                , 0
+                , IntPtr.Zero
+                , currentDirectory
+                , ref startupinfoa
+                , ref processInfomation);
         }
 
         private void StopProcess()
