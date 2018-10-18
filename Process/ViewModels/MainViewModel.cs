@@ -100,14 +100,15 @@ namespace Processes.ViewModels
 
         public void Sorting1()
         {
-            for (int i = 0; i < processViewModels1.Count; i++)
+            for (int i = 1; i < processViewModels1.Count; i++)
             {
 
                 ProcessViewModel processModel = processViewModelSearch(processViewModels, processViewModels1[i].ParentProcessID);
 
                 if (processModel != null)
                 {
-                    processViewModels.Remove(processViewModels1[i]);//чего не удаляет?
+                    ProcessViewModel processViewModel = processViewModelSearch(processViewModels, processViewModels1[i].ProcessID);
+                    processViewModels.Remove(processViewModel);
 
                     processModel.ProcessesViewModel.Add(processViewModels1[i]);
                 }
