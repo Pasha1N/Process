@@ -18,7 +18,7 @@ namespace Processes
         [DllImport(dllName, EntryPoint = "Process32Next")]
         public static extern bool NextProcess(IntPtr handle, ref ProcessEntry @struct);
 
-        [DllImport(dllName)]
+        [DllImport(dllName, SetLastError =true)]
         public static extern bool CreateProcess(string lpApplicationName
             , string lpCommandLine
             , IntPtr lpProcessAttributes

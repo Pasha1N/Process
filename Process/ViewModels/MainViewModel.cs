@@ -3,6 +3,7 @@ using Processes.Command;
 using Processes.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -162,7 +163,8 @@ namespace Processes.ViewModels
             startupinfoa.cb = Marshal.SizeOf<Startupinfoa>();
             ProcessInfomation processInfomation = new ProcessInfomation();
             //string commandLine = "calc";
-            string commandLine = "cadcflc";//как узнать зупустился ли процесс?
+            string commandLine = "cadcflc";
+            
 
             string apName = null;
             string currentDirectory = null;
@@ -177,6 +179,12 @@ namespace Processes.ViewModels
                 , currentDirectory
                 , ref startupinfoa
                 , ref processInfomation);
+
+            if (Marshal.GetLastWin32Error() != 0)
+            {
+                Win32Exception errorMessage = new Win32Exception(Marshal.GetLastWin32Error());
+                MessageBox.Show(errorMessage.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void StopProcess()
