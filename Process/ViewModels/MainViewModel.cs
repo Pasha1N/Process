@@ -3,6 +3,7 @@ using Processes.Command;
 using Processes.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -13,14 +14,14 @@ using System.Windows.Input;
 
 namespace Processes.ViewModels
 {
-    public class MainViewModel
+    public class MainViewModel : INotifyPropertyChanged
     {
-        private const string dllName = @"Kernel32.dll";
         private int invalidValue = -1;
+        private IList<ProcessViewModel> processViewModelsOrigin = new ObservableCollection<ProcessViewModel>();
         private IList<ProcessViewModel> processViewModels = new List<ProcessViewModel>();
-        private IList<ProcessViewModel> processViewModels1 = new List<ProcessViewModel>();
+        private ProcessViewModel selectProcessViewModel = null;
+        private string commandLine = string.Empty;
 
-        private IList<Models.Process> processes = new List<Models.Process>();//IColaction
         private ICommand commandForStopProcess;
         private ICommand commandForCreateProcess;
         private ICommand commandForRefresh;
@@ -29,14 +30,44 @@ namespace Processes.ViewModels
         {
             commandForStopProcess = new DelegateCommand(StopProcess);
             commandForCreateProcess = new DelegateCommand(CreateProcess);
+            commandForRefresh = new DelegateCommand(CollectionRefresh);
             GetProcessHandle();
-            Sorting1();
+            Sorting();
         }
 
         public ICommand CommandForCreateProcess => commandForCreateProcess;
         public ICommand CommandForStopProcess => commandForStopProcess;
         public ICommand CommandForRefresh => commandForRefresh;
-        public IEnumerable<ProcessViewModel> Processes => processViewModels;
+        public IList<ProcessViewModel> Processes
+        {
+            get => processViewModelsOrigin;
+            set
+            {
+                processViewModelsOrigin = value;
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(Processes)));
+            }
+        }
+        public ProcessViewModel SelectProcessViewModel //не возвращает выделенный элемент
+        {
+            get => selectProcessViewModel;
+            set
+            {
+                selectProcessViewModel = value;
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(SelectProcessViewModel)));
+            }
+        }
+        public string CommandLine
+        {
+            get => commandLine;
+            set
+            {
+                commandLine = value;
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(CommandLine)));
+            }
+        }
+
+
+       public event PropertyChangedEventHandler PropertyChanged;
 
         public void GetProcessHandle()
         {
@@ -52,9 +83,8 @@ namespace Processes.ViewModels
                     do
                     {
                         Models.Process process = new Models.Process(processEntry.ExeFile, processEntry.ProcessID, processEntry.ParentProcessID);
-                        //processes.Add(process);
-                        processViewModels.Add(new ProcessViewModel( process));
-                        processViewModels1.Add(new ProcessViewModel(process));
+                        processViewModelsOrigin.Add(new ProcessViewModel( process));
+                        processViewModels.Add(new ProcessViewModel(process));
                     }
                     while (MethodsFromUnmanagedCode.NextProcess(handle, ref processEntry));
                 }
@@ -63,55 +93,17 @@ namespace Processes.ViewModels
 
         public void Sorting()
         {
-            int a = 0;
-            for (int j = 1; j < processes.Count; j++)
-            {
-                ProcessViewModel processViewModel = null;
-                processViewModel = processViewModelSearch(processViewModels, processes[j].ParentProcessID);
-
-                if (processViewModel != null)
-                {
-                    ProcessViewModel processModel = new ProcessViewModel(processes[j]);
-                    processes.Remove(processes[j]);
-                    processViewModel.ProcessesViewModel.Add(processModel);
-                }
-                else
-                {
-                    ProcessViewModel processModel = new ProcessViewModel(processes[j]);
-                    Models.Process parentProcess = ProcessSearch(processModel.ParentProcessID);
-
-                    if (parentProcess != null)
-                    {
-                        ProcessViewModel parentProcessModel = new ProcessViewModel(parentProcess);
-                        parentProcessModel.ProcessesViewModel.Add(processModel);
-                        //processes.Remove(processes[j]);
-                       // processes.Remove(parentProcess);
-                        processViewModels.Add(parentProcessModel);
-                    }
-                    else
-                    {
-                        ProcessViewModel processModel1 = new ProcessViewModel(processes[j]);
-                        processViewModels.Add(processModel1);
-                    }
-                }
-                a = j;
-            }
-            int d = a;
-        }
-
-        public void Sorting1()
-        {
-            for (int i = 1; i < processViewModels1.Count; i++)
+            for (int i = 1; i < processViewModels.Count; i++)
             {
 
-                ProcessViewModel processModel = processViewModelSearch(processViewModels, processViewModels1[i].ParentProcessID);
+                ProcessViewModel processModel = processViewModelSearch(processViewModelsOrigin, processViewModels[i].ParentProcessID);
 
                 if (processModel != null)
                 {
-                    ProcessViewModel processViewModel = processViewModelSearch(processViewModels, processViewModels1[i].ProcessID);
-                    processViewModels.Remove(processViewModel);
+                    ProcessViewModel processViewModel = processViewModelSearch(processViewModelsOrigin, processViewModels[i].ProcessID);
+                    processViewModelsOrigin.Remove(processViewModel);
 
-                    processModel.ProcessesViewModel.Add(processViewModels1[i]);
+                    processModel.ProcessesViewModel.Add(processViewModels[i]);
                 }
             }
         }
@@ -141,30 +133,11 @@ namespace Processes.ViewModels
             return processViewModel;
         }
 
-        public Models.Process ProcessSearch(int processId)
-        {
-            Models.Process desiredProcess = null;
-
-            foreach (Models.Process process in processes)
-            {
-                if (process.ProcessID == processId)
-                {
-                    desiredProcess = process;
-                    break;
-                }
-            }
-            return desiredProcess;
-        }
-
-
         private void CreateProcess()
         {
             Startupinfoa startupinfoa = new Startupinfoa();
             startupinfoa.cb = Marshal.SizeOf<Startupinfoa>();
-            ProcessInfomation processInfomation = new ProcessInfomation();
-            //string commandLine = "calc";
-            string commandLine = "cadcflc";
-            
+            ProcessInfomation processInfomation = new ProcessInfomation();            
 
             string apName = null;
             string currentDirectory = null;
@@ -190,6 +163,21 @@ namespace Processes.ViewModels
         private void StopProcess()
         {
 
+
+        }
+
+        public void CollectionRefresh()
+        {
+            processViewModelsOrigin.Clear();
+            processViewModels.Clear();
+            GetProcessHandle();
+            Sorting();
+            OnPropertyChanged(new PropertyChangedEventArgs(nameof(Processes)));
+        }
+
+        public void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            PropertyChanged?.Invoke(this, e);
         }
 
     }
