@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Processes.Models
 {
     public class Process
     {
-        private string processName;
-        private int processID;
         private int parentProcessID;
+        private int processID;
+        private string processName;
 
         public Process(string processName, int processID, int parentProcessID)
         {
@@ -19,9 +15,9 @@ namespace Processes.Models
             this.parentProcessID = parentProcessID;
         }
 
-        public ICollection<Process> Processes { get;}
+        public int ParentProcessID => parentProcessID;
+        public ICollection<Process> Processes { get; }
         public int ProcessID => processID;
         public string ProcessName => processName;
-        public int ParentProcessID => parentProcessID;
     }
 }

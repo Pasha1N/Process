@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Process.View"
+        xmlns:models="clr-namespace:Processes.Models"
         xmlns:viewModels="clr-namespace:Processes.ViewModels" 
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="500">
@@ -13,9 +14,7 @@
                 <Run  FontWeight="Bold"  Text="{Binding Path= ProcessName, Mode=OneWay}"/>
                 <Run Text="("/>
                 <Run Text="{Binding Path=ProcessID, Mode=OneWay}"/>
-                 <Run Text=")                          ("/>
-                <Run Text="{Binding Path=ParentProcessID, Mode=OneWay}"/>
-                <Run Text=")"/>
+                 <Run Text=")"/>
             </TextBlock>
         </HierarchicalDataTemplate>
     </Window.Resources>
@@ -26,8 +25,7 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
-        <TreeView Grid.Row="0" BorderThickness="1" SelectedValuePath="{Binding Path=SelectProcessViewModel, UpdateSourceTrigger=PropertyChanged}" ItemsSource = "{Binding Path = Processes}"/>
-
+        <models:BindableTreeView Grid.Row="0" BorderThickness="1" BindableSelectedItem="{Binding Path=SelectedProcessViewModel, Mode=TwoWay}" ItemsSource = "{Binding Path = Processes}"/>
         <Grid Grid.Row="1" Margin="0,0,0,2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="365*"/>
