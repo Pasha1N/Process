@@ -14,8 +14,11 @@ namespace Processes.ViewModels
         }
 
         public int ParentProcessID => process.ParentProcessID;
+
         public int ProcessID => process.ProcessID;
+
         public ICollection<ProcessViewModel> ProcessesViewModel => processesViewModel;
+
         public string ProcessName => process.ProcessName;
     }
 }

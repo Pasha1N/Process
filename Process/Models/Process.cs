@@ -16,8 +16,11 @@ namespace Processes.Models
         }
 
         public int ParentProcessID => parentProcessID;
+
         public ICollection<Process> Processes { get; }
+
         public int ProcessID => processID;
+
         public string ProcessName => processName;
     }
 }

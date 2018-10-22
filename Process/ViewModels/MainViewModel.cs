@@ -32,7 +32,9 @@ namespace Processes.ViewModels
         }
 
         public ICommand CommandForCreateProcess => commandForCreateProcess;
+
         public ICommand CommandForRefresh => commandForRefresh;
+
         public string CommandLine
         {
             get => commandLine;
@@ -44,7 +46,9 @@ namespace Processes.ViewModels
                 commandForCreateProcess.OnCanExecuteChanged(EventArgs.Empty);
             }
         }
+
         public ICommand CommandForStopProcess => commandForStopProcess;
+
         public IList<ProcessViewModel> Processes
         {
             get => processViewModelsOrigin;
@@ -54,6 +58,7 @@ namespace Processes.ViewModels
                 OnPropertyChanged(new PropertyChangedEventArgs(nameof(Processes)));
             }
         }
+
         public ProcessViewModel SelectedProcessViewModel
         {
             get => selectProcessViewModel;
