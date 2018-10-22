@@ -45,14 +45,6 @@ namespace Processes.ViewModels
             }
         }
         public ICommand CommandForStopProcess => commandForStopProcess;
-        private bool EnableCommandCreateProcess()
-        {
-            return enableCommandCreateProcess;
-        }
-        private bool EnableCommandStopProcess()
-        {
-            return enableCommandStopProcess;
-        }
         public IList<ProcessViewModel> Processes
         {
             get => processViewModelsOrigin;
@@ -110,6 +102,16 @@ namespace Processes.ViewModels
                 Win32Exception errorMessage = new Win32Exception(Marshal.GetLastWin32Error());
                 MessageBox.Show(errorMessage.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private bool EnableCommandCreateProcess()
+        {
+            return enableCommandCreateProcess;
+        }
+
+        private bool EnableCommandStopProcess()
+        {
+            return enableCommandStopProcess;
         }
 
         public void GetProcessHandle()
