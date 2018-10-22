@@ -52,11 +52,6 @@ namespace Processes.ViewModels
         public IList<ProcessViewModel> Processes
         {
             get => processViewModelsOrigin;
-            set
-            {
-                processViewModelsOrigin = value;
-                OnPropertyChanged(new PropertyChangedEventArgs(nameof(Processes)));
-            }
         }
 
         public ProcessViewModel SelectedProcessViewModel
