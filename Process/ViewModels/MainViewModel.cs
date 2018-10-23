@@ -21,7 +21,7 @@ namespace Processes.ViewModels
         private bool enableCommandStopProcess;
         private IList<ProcessViewModel> processViewModels = new List<ProcessViewModel>();
         private IList<ProcessViewModel> processViewModelsOrigin = new ObservableCollection<ProcessViewModel>();
-        private ProcessViewModel selectProcess = null;
+        private ProcessViewModel selectedProcess = null;
 
         public MainViewModel()
         {
@@ -41,10 +41,13 @@ namespace Processes.ViewModels
             get => commandLine;
             set
             {
-                commandLine = value;
-                OnPropertyChanged(new PropertyChangedEventArgs(nameof(CommandLine)));
-                enableCommandCreateProcess = commandLine.Length > 0;
-                commandForCreateProcess.OnCanExecuteChanged(EventArgs.Empty);
+                if (commandLine != value)
+                {
+                    commandLine = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(CommandLine)));
+                    enableCommandCreateProcess = commandLine.Length > 0;
+                    commandForCreateProcess.OnCanExecuteChanged(EventArgs.Empty);
+                }
             }
         }
 
@@ -57,13 +60,16 @@ namespace Processes.ViewModels
 
         public ProcessViewModel SelectedProcess
         {
-            get => selectProcess;
+            get => selectedProcess;
             set
             {
-                selectProcess = value;
-                OnPropertyChanged(new PropertyChangedEventArgs(nameof(SelectedProcess)));
-                enableCommandStopProcess = selectProcess != null;
-                commandForStopProcess.OnCanExecuteChanged(EventArgs.Empty);
+                if (selectedProcess != value)
+                {
+                    selectedProcess = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(SelectedProcess)));
+                    enableCommandStopProcess = selectedProcess != null;
+                    commandForStopProcess.OnCanExecuteChanged(EventArgs.Empty);
+                }
             }
         }
 
