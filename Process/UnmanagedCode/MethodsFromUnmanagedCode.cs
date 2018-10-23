@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Processes
 {
-    internal class MethodsFromUnmanagedCode
+    internal static class MethodsFromUnmanagedCode
     {
         private const string dllName = @"Kernel32.dll";
 
