@@ -21,7 +21,7 @@ namespace Processes.ViewModels
         private bool enableCommandStopProcess;
         private IList<ProcessViewModel> processViewModels = new List<ProcessViewModel>();
         private IList<ProcessViewModel> processViewModelsOrigin = new ObservableCollection<ProcessViewModel>();
-        private ProcessViewModel selectProcessViewModel = null;
+        private ProcessViewModel selectProcess = null;
 
         public MainViewModel()
         {
@@ -55,14 +55,14 @@ namespace Processes.ViewModels
             get => processViewModelsOrigin;
         }
 
-        public ProcessViewModel SelectedProcessViewModel
+        public ProcessViewModel SelectedProcess
         {
-            get => selectProcessViewModel;
+            get => selectProcess;
             set
             {
-                selectProcessViewModel = value;
-                OnPropertyChanged(new PropertyChangedEventArgs(nameof(SelectedProcessViewModel)));
-                enableCommandStopProcess = selectProcessViewModel != null;
+                selectProcess = value;
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(SelectedProcess)));
+                enableCommandStopProcess = selectProcess != null;
                 commandForStopProcess.OnCanExecuteChanged(EventArgs.Empty);
             }
         }
@@ -190,7 +190,7 @@ namespace Processes.ViewModels
 
         private void StopProcess()
         {
-            IntPtr handleProcess = MethodsFromUnmanagedCode.OpenProcess(0x0001, false, SelectedProcessViewModel.ProcessID);
+            IntPtr handleProcess = MethodsFromUnmanagedCode.OpenProcess(0x0001, false, SelectedProcess.ProcessID);
             MethodsFromUnmanagedCode.TerminateProcess(handleProcess, 0);
             Win32Exception errorMessage = new Win32Exception(Marshal.GetLastWin32Error());
 
