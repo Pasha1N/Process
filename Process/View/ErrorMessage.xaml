@@ -1,0 +1,26 @@
+﻿<Window x:Class="Processes.View.ErrorMessage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Processes.View"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"       
+        Title="ErrorMessage" Height="300" Width="600">
+    <Grid Background="#FFD44C24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="46*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="46*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="65*"/>
+            <ColumnDefinition Width="257*"/>
+            <ColumnDefinition Width="65*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="1" Grid.Row="1"  Background="#FFD44C24" Text="{Binding Path=Error, Mode=OneWay}" FontWeight="Bold"  FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    </Grid>
+</Window>

@@ -1,5 +1,6 @@
 ﻿using Processes.Command;
 using Processes.Models;
+using Processes.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -100,7 +101,11 @@ namespace Processes.ViewModels
             if (Marshal.GetLastWin32Error() != 0)
             {
                 Win32Exception errorMessage = new Win32Exception(Marshal.GetLastWin32Error());
-                MessageBox.Show(errorMessage.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
+
+                ErrorMessageViewModel errorMessageViewModel = new ErrorMessageViewModel();
+                ErrorMessage error = new ErrorMessage(errorMessageViewModel);
+                errorMessageViewModel.Error = $"{errorMessage.Message}";
+                error.ShowDialog();
             }
         }
 
@@ -191,7 +196,10 @@ namespace Processes.ViewModels
 
             if (Marshal.GetLastWin32Error() != 0)
             {
-                MessageBox.Show(errorMessage.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
+                ErrorMessageViewModel errorMessageViewModel = new ErrorMessageViewModel();
+                ErrorMessage error = new ErrorMessage(errorMessageViewModel);
+                errorMessageViewModel.Error = $"{errorMessage.Message}";
+                error.ShowDialog();
             }
         }
     }
