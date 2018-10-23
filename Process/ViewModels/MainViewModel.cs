@@ -13,14 +13,14 @@ namespace Processes.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        private Processes.Command.Command commandForCreateProcess;
-        private ICommand commandForRefresh;
+        private readonly Processes.Command.Command commandForCreateProcess;
+        private readonly ICommand commandForRefresh;
         private string commandLine = string.Empty;
-        private Processes.Command.Command commandForStopProcess;
+        private readonly Processes.Command.Command commandForStopProcess;
         private bool enableCommandCreateProcess;
         private bool enableCommandStopProcess;
-        private IList<ProcessViewModel> processViewModels = new List<ProcessViewModel>();
-        private IList<ProcessViewModel> processViewModelsOrigin = new ObservableCollection<ProcessViewModel>();
+        private readonly IList<ProcessViewModel> processViewModels = new List<ProcessViewModel>();
+        private readonly IList<ProcessViewModel> processViewModelsOrigin = new ObservableCollection<ProcessViewModel>();
         private ProcessViewModel selectedProcess = null;
 
         public MainViewModel()

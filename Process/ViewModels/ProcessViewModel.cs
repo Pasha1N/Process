@@ -5,8 +5,8 @@ namespace Processes.ViewModels
 {
     public class ProcessViewModel
     {
-        private Models.Process process;
-        private ICollection<ProcessViewModel> processesViewModel = new ObservableCollection<ProcessViewModel>();
+        private readonly Models.Process process;
+        private readonly ICollection<ProcessViewModel> processesViewModel = new ObservableCollection<ProcessViewModel>();
 
         public ProcessViewModel(Models.Process process)
         {

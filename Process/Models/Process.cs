@@ -4,9 +4,9 @@ namespace Processes.Models
 {
     public class Process
     {
-        private int parentProcessID;
-        private int processID;
-        private string processName;
+        private readonly int parentProcessID;
+        private readonly int processID;
+        private readonly string processName;
 
         public Process(string processName, int processID, int parentProcessID)
         {
