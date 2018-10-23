@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Processes.Models
+namespace Processes
 {
     internal sealed class BindableTreeView : TreeView
     {
