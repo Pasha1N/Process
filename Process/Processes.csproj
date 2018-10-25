@@ -61,6 +61,8 @@
     <Compile Include="Command\Command.cs" />
     <Compile Include="Command\DelegateCommand.cs" />
     <Compile Include="BindableTreeView.cs" />
+    <Compile Include="ErrorDisplay\IShowErrorMessage.cs" />
+    <Compile Include="ErrorDisplay\ShowErrorMessage.cs" />
     <Compile Include="Models\Process.cs" />
     <Compile Include="UnmanagedCode\ProcessInfomation.cs" />
     <Compile Include="UnmanagedCode\SecurityAttributes.cs" />

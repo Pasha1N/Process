@@ -23,10 +23,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="380*"/>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="1"/>
         </Grid.RowDefinitions>
 
         <models:BindableTreeView Grid.Row="0" BorderThickness="1" BindableSelectedItem="{Binding Path=SelectedProcess, Mode=TwoWay}" ItemsSource = "{Binding Path = Processes}"/>
-        <Grid Grid.Row="1" Margin="0,0,0,2">
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="365*"/>
                 <ColumnDefinition Width="83"/>
@@ -38,6 +39,22 @@
             <Button Command="{Binding Path= CommandForStopProcess}"  Grid.Column="2" Margin="3" Content="Stop"/>
             <Button Command="{Binding Path=CommandForRefresh}" Grid.Column="3" Margin="3,3,0,3" Content="Refresh"/>
             <TextBox Text="{Binding Path=CommandLine,UpdateSourceTrigger=PropertyChanged}" Margin="0,3,3,3"/>
+        </Grid>
+
+        <Grid Margin="80" Background="#F9EE0000" Grid.Row="{Binding Path=CurrentGrid}">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="25*"/>
+                    <RowDefinition Height="25"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Error" FontSize="15" HorizontalAlignment="Left" Width="32"/>
+                <TextBlock Grid.Row="1" Text="{Binding Path=ErrorMessage}" HorizontalAlignment="Left"/>
+                <Button Command="{Binding Path=ButtonOk}" Grid.Row="3" FontWeight="Bold" Content="Ok"
+                        Background="#F9FF0032" BorderBrush="#F9FF0000" Width="75" HorizontalAlignment="Right" />
+            </Grid>
         </Grid>
     </Grid>
 </Window>

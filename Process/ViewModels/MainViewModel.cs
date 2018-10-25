@@ -1,24 +1,25 @@
 ﻿using Processes.Command;
 using Processes.Models;
-using Processes.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using System.Windows;
 using System.Windows.Input;
 
 namespace Processes.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        private ICommand buttonOk;
         private readonly Processes.Command.Command commandForCreateProcess;
         private readonly ICommand commandForRefresh;
         private string commandLine = string.Empty;
         private readonly Processes.Command.Command commandForStopProcess;
         private bool enableCommandCreateProcess;
         private bool enableCommandStopProcess;
+        private int currentGrid = 2;
+        private string errorMessage = string.Empty;
         private readonly IList<ProcessViewModel> processViewModels = new List<ProcessViewModel>();
         private readonly IList<ProcessViewModel> processViewModelsOrigin = new ObservableCollection<ProcessViewModel>();
         private ProcessViewModel selectedProcess = null;
@@ -28,9 +29,12 @@ namespace Processes.ViewModels
             commandForStopProcess = new DelegateCommand(StopProcess, EnableCommandStopProcess);
             commandForCreateProcess = new DelegateCommand(CreateProcess, EnableCommandCreateProcess);
             commandForRefresh = new DelegateCommand(CollectionRefresh);
+            buttonOk = new DelegateCommand(PressedButton);
             GetProcessHandle();
             Sorting();
         }
+
+        public ICommand ButtonOk => buttonOk;
 
         public ICommand CommandForCreateProcess => commandForCreateProcess;
 
@@ -53,6 +57,32 @@ namespace Processes.ViewModels
 
         public ICommand CommandForStopProcess => commandForStopProcess;
 
+        public int CurrentGrid
+        {
+            get => currentGrid;
+            set
+            {
+                if (currentGrid != value)
+                {
+                    currentGrid = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(CurrentGrid)));
+                }
+            }
+        }
+
+        public string ErrorMessage
+        {
+            get => errorMessage;
+            set
+            {
+                if (errorMessage != value)
+                {
+                    errorMessage = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(ErrorMessage)));
+                }
+            }
+        }
+
         public IList<ProcessViewModel> Processes
         {
             get => processViewModelsOrigin;
@@ -74,6 +104,11 @@ namespace Processes.ViewModels
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public void PressedButton()
+        {
+            CurrentGrid = 2;
+        }
 
         public void CollectionRefresh()
         {
@@ -107,11 +142,8 @@ namespace Processes.ViewModels
             if (Marshal.GetLastWin32Error() != 0)
             {
                 Win32Exception errorMessage = new Win32Exception(Marshal.GetLastWin32Error());
-
-                ErrorMessageViewModel errorMessageViewModel = new ErrorMessageViewModel();
-                ErrorMessage error = new ErrorMessage(errorMessageViewModel);
-                errorMessageViewModel.Error = $"{errorMessage.Message}";
-                error.ShowDialog();
+                ErrorMessage = errorMessage.Message;
+                CurrentGrid = 0;
             }
         }
 
@@ -202,10 +234,8 @@ namespace Processes.ViewModels
 
             if (Marshal.GetLastWin32Error() != 0)
             {
-                ErrorMessageViewModel errorMessageViewModel = new ErrorMessageViewModel();
-                ErrorMessage error = new ErrorMessage(errorMessageViewModel);
-                errorMessageViewModel.Error = $"{errorMessage.Message}";
-                error.ShowDialog();
+                ErrorMessage = errorMessage.Message;
+                CurrentGrid = 0;
             }
         }
     }
